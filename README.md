@@ -1,4 +1,4 @@
-# P2P_FTA
+# P2P_FireFiles
 
 This Repository is for Peer-to-peer Web App Firefiles built during the IE 2023 Project.
 
