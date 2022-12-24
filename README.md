@@ -24,7 +24,7 @@ Understanding peer-to-peer networking is of significant importance due to its va
 | Team Members |  
 | :------------: |  
 | [tanushka Garg](https://github.com/Tanushkagarg) |  
-| [Bhuvan MG]() |  
+| [Bhuvan MG](https://github.com/bhuvan-mg) |  
 | [Shivam Sharma](https://github.com/shivamsharma2k3) |  
  
 
