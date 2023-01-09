@@ -15,7 +15,7 @@ function Srdv(props) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React nigga
+          type anything 
         </a>
       </header>
     </div>
