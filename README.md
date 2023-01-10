@@ -30,7 +30,7 @@ Understanding peer-to-peer networking is of significant importance due to its va
 
 ## Libraries/Softwares Used
 
-##React
+## React
 
 # Getting Started with Create React App
 
