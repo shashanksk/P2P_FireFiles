@@ -7,7 +7,7 @@ function loader(){
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
-                <p>Loading ...</p>
+                <h1 align = 'center'>Loading ...</h1>
             </header>
         </div>
     )
