@@ -12,7 +12,7 @@ function App(){
   })
   return(
     <div>
-        {isLoading == true?
+        {isLoading === true?
           <Loader />:
           <MainPage />
         }
