@@ -4,18 +4,10 @@ import Loader from './loader.js'
 
 
 function App(){
-  const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2500)
-  })
+  
   return(
     <div>
-        {isLoading === true?
-          <Loader />:
-          <MainPage />
-        }
+        
     </div>
   )
 
