@@ -3,6 +3,7 @@
   height: 20rem;
   width: 100%;
 }
+
 .mainBox > * {
   display:inline-block;
   background-color:lightgreen;

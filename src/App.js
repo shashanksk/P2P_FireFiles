@@ -1,9 +1,9 @@
 import React from 'react';
-
+import { useNavigate } from "react-router-dom";
 import "./css/App.css"
 
 function App(){
-
+  const navigate = useNavigate();
   const peer = new RTCPeerConnection({ 
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
@@ -43,21 +43,33 @@ function App(){
   const BUFFER_THRESHOLD = 65535;
   const LAST_DATA_OF_FILE = "LDOF7";
 
-  
-  
- 
+
   return(
 
-    
-    <div className='mainBox'>
-      <div className='send'>
-      </div>
-            
-      <div className='recieve'>
-      </div>
+    <div>
+      <h1>Home Page</h1>
+      <hr />
+
+      {/* Button */}
+      <p color='white'>
+        <button onClick={() => navigate("/lobby")}>Go to Video Chat</button>
+      </p>
       
-      
-    </div>  
+      {/* For the button for file sharing */}
+      {/* <p color='white'>
+        <button onClick={() => navigate("/fileshare")}>Go to File Share</button>
+      </p> */}
+
+      {/* <div className='mainBox'>
+        <div className='send'>
+        </div>
+              
+        <div className='recieve'>
+        </div>
+        
+        
+      </div>   */}
+    </div>
   )
 
 }
