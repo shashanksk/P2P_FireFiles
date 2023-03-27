@@ -1,6 +1,8 @@
 import React from 'react';
+import AgoraRTM from './agora-rtm-sdk-1.5.1.js'
 import { useNavigate } from "react-router-dom";
 import "./main.css"
+import './Lobby.js'
 
 function Meet(){
     const navigate = useNavigate();
@@ -13,13 +15,7 @@ function Meet(){
     let client;
     let channel;
 
-    let queryString = window.location.search
-    let urlParams = new URLSearchParams(queryString)
-    let roomId = urlParams.get('room')
-
-    if(!roomId){
-        window.location = 'Lobby.js'
-    }
+    let roomId = 'meeting'
 
     let localStream;
     let remoteStream;
@@ -176,7 +172,7 @@ function Meet(){
 
     document.getElementById('camera-btn').addEventListener('click', toggleCamera)
     document.getElementById('mic-btn').addEventListener('click', toggleMic)
-
+    init()
     return(
         <div>
             <body>
@@ -185,7 +181,7 @@ function Meet(){
                 <video class="video-player" id="user-1" autoplay playsinline></video>
                 <video class="video-player" id="user-2" autoplay playsinline></video>
             </div>
-
+            <p color = 'white'>Heyyyyyyyyyy</p>
             <div id = "controls">
                 <div class = "control-container" id = "camera-btn">
                     <img src="icons/camera.png" />
@@ -193,17 +189,29 @@ function Meet(){
                 <div class = "control-container" id = "mic-btn">
                     <img src="icons/mic.png" />
                 </div>
-                <a href="lobby.html">
+                <a href="./Lobby.js">
                     <div class = "control-container" id = "leave-btn">
                         <img src="icons/phone.png" />
                     </div>
                 </a>
             </div>
-
             </body>
+            {/* <script
+            src='./agora-rtm-sdk-1.5.1.js'
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"
+            async
+            ></script> */}
+            {/* <script
+            src='./main.js'
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"
+            async
+            ></script> */}
+            {init()}
         </div>
     )
 
 }
 
-export default Lobby;
+export default Meet;

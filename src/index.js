@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './css/index.css';
 import App from './App';
 import Lobby from "./videoChat/Lobby.js";
+import Meet from "./videoChat/Meet.js"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import Top from './Top';
@@ -19,6 +20,7 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/lobby" element={<Lobby />} />
+      <Route path="/meet" element={<Meet />} />
       {/* <Route path="/fileshare" element={<FileSharingLobby />} /> */}
     </Routes>
   </Router>
