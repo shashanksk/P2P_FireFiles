@@ -2,10 +2,10 @@ import React from 'react';
 import AgoraRTM from './agora-rtm-sdk-1.5.1.js'
 import { useNavigate } from "react-router-dom";
 import "./main.css"
-import './Lobby.js'
+import "./Lobby.js"
 
 function Meet(){
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     let APP_ID = "50f5192da9ea4f8fa089db17bf6c7a59"
 
@@ -21,6 +21,8 @@ function Meet(){
     let remoteStream;
     let peerConnection;
 
+    
+
     const servers = {
         iceServers:[
             {
@@ -28,7 +30,7 @@ function Meet(){
             }
         ]
     }
-
+    
     let constraints = {
         video:{
             width:{min:640, ideal:1920, max:1920},
@@ -36,52 +38,25 @@ function Meet(){
         },
         audio:true
     }
-
-    let init = async () => {
-        client = await AgoraRTM.createInstance(APP_ID)
-        await client.login({uid, token})
-
-        channel = client.createChannel(roomId)
-        await channel.join()
-        
-        channel.on('MemberJoined', handleUserJoined)
-        channel.on('MemberLeft', handleUserLeft)
-
-        client.on('MessageFromPeer', handleMessageFromPeer)
-
-        localStream = await navigator.mediaDevices.getUserMedia(constraints)
-        document.getElementById('user-1').srcObject = localStream
-    }
-
-    let handleUserLeft = (MemberId) => {
-        document.getElementById('user-2').style.display = 'none'
-        document.getElementById('user-1').classList.remove('smallFrame')
-
-    }
-
-    let handleMessageFromPeer = async (message, MemberId) => {
-        message = JSON.parse(message.text)
-
-        if(message.type === 'offer'){
-            createAnswer(MemberId, message.offer)
-        }
-
-        if(message.type === 'answer'){
-            addAnswer(message.answer)
-        }
-
-        if(message.type === 'candidate'){
-            if(peerConnection){
-                peerConnection.addIceCandidate(message.candidate)
-            }
-        }
-    }
-
+    
     let handleUserJoined = async (MemberId) => {
         console.log('A new user joined the channel:', MemberId)
         createOffer(MemberId)
     }
+    
+    // let createOffer = async (MemberId) => {
+    let createOffer = async (MemberId) =>{
+        await createPeerConnection(MemberId)
+        
 
+        let offer = await peerConnection.createOffer()
+        await peerConnection.setLocalDescription(offer)
+        // window.alert('hello')
+        console.log('offer:',offer)
+        // client.sendMessageToPeer({Text:'welp did this work'}) //deebug line
+        client.sendMessageToPeer({text:JSON.stringify({'type':'offer', 'offer':offer})}, MemberId)
+    }
+    
     let createPeerConnection = async (MemberId) => {
         peerConnection = new RTCPeerConnection(servers)
 
@@ -113,13 +88,28 @@ function Meet(){
         }
     }
 
-    let createOffer = async (MemberId) => {
-        await createPeerConnection(MemberId)
+    let handleUserLeft = (MemberId) => {
+        document.getElementById('user-2').style.display = 'none'
+        document.getElementById('user-1').classList.remove('smallFrame')
 
-        let offer = await peerConnection.createOffer()
-        await peerConnection.setLocalDescription(offer)
+    }
 
-        client.sendMessageToPeer({text:JSON.stringify({'type':'offer', 'offer':offer})}, MemberId)
+    let handleMessageFromPeer = async (message, MemberId) => {
+        message = JSON.parse(message.text)
+
+        if(message.type === 'offer'){
+            createAnswer(MemberId, message.offer)
+        }
+
+        if(message.type === 'answer'){
+            addAnswer(message.answer)
+        }
+
+        if(message.type === 'candidate'){
+            if(peerConnection){
+                peerConnection.addIceCandidate(message.candidate)
+            }
+        }
     }
 
     let createAnswer = async (MemberId, offer) => {
@@ -138,6 +128,28 @@ function Meet(){
             peerConnection.setRemoteDescription(answer)
         }
     }
+
+    let init = async () => {
+        client = await AgoraRTM.createInstance(APP_ID)
+        await client.login({uid, token})
+        
+        // channel = client.createChannel(roomId)
+        channel = client.createChannel('main')
+        await channel.join()
+        
+        channel.on('MemberJoined', handleUserJoined)
+        // channel.on('MemberLeft', handleUserLeft)
+
+        client.on('MessageFromPeer', handleMessageFromPeer)
+
+        // localStream = await navigator.mediaDevices.getUserMedia(constraints) // this is original
+        localStream = await navigator.mediaDevices.getUserMedia({video:true,audio:false})
+        
+        document.getElementById('user-1').srcObject = localStream
+        console.log("camera load succesfull")
+        
+    }
+
 
     let leaveChannel = async () => {
         await channel.leave()
@@ -168,47 +180,48 @@ function Meet(){
         }
     }
 
-    window.addEventListener('beforeunload', leaveChannel)
+    
+    // document.getElementById('camera-btn').addEventListener('click', toggleCamera)
+    var el = document.getElementById('camera-btn');
+    if(el){
+        el.addEventListener('click',toggleCamera)
+    }
+    else{
+        window.alert("agora camera connection failed")
+    }
+    // document.getElementById('mic-btn').addEventListener('click', toggleMic)  //issue was agora was not connecting soo the event listener was forever waiting
+    var mic = document.getElementById('mic-btn');
+    if(mic){
+        mic.addEventListener('click',toggleMic)
+    }
+    else{
+        window.alert("agora mic connection failed")
+    }
+    window.addEventListener('beforeunload', leaveChannel) 
 
-    document.getElementById('camera-btn').addEventListener('click', toggleCamera)
-    document.getElementById('mic-btn').addEventListener('click', toggleMic)
     init()
     return(
         <div>
             <body>
-
             <div id="videos">
-                <video class="video-player" id="user-1" autoplay playsinline></video>
-                <video class="video-player" id="user-2" autoplay playsinline></video>
+                <video className="video-player" id="user-1" autoPlay playsInline></video>
+                <video className="video-player" id="user-2" autoPlay playsInline></video>
             </div>
             <p color = 'white'>Heyyyyyyyyyy</p>
             <div id = "controls">
-                <div class = "control-container" id = "camera-btn">
-                    <img src="icons/camera.png" />
+                <div className= "control-container" id = "camera-btn">
+                    <img src={require("./icons/camera.png")}  alt=''/>
                 </div>
-                <div class = "control-container" id = "mic-btn">
-                    <img src="icons/mic.png" />
+                <div className = "control-container" id = "mic-btn">
+                    <img src={require("./icons/mic.png")} alt='' />
                 </div>
-                <a href="./Lobby.js">
-                    <div class = "control-container" id = "leave-btn">
-                        <img src="icons/phone.png" />
+                <a href="./Lobby">
+                    <div className = "control-container" id = "leave-btn">
+                        <img src={require("./icons/phone.png")} alt=''/>
                     </div>
                 </a>
             </div>
-            </body>
-            {/* <script
-            src='./agora-rtm-sdk-1.5.1.js'
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"
-            async
-            ></script> */}
-            {/* <script
-            src='./main.js'
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"
-            async
-            ></script> */}
-            {init()}
+            </body>        
         </div>
     )
 
