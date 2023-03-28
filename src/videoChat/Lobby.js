@@ -23,7 +23,7 @@ function Lobby(){
                                 <input type="submit" value="Join Room" />
                             </form> */}
                             <div id = "join-form">
-                                <button onClick={() => navigate("/meet")}>Go to Video Chat</button>
+                                <button onClick={() => navigate("/Meet")}>Go to Video Chat</button>
                                 <button onClick={() => navigate(-1)}>Go Back</button>
                             </div>
                         </div>
