@@ -1,4 +1,3 @@
-import AgoraRTM from './agora-rtm-sdk-1.5.1.js'
 let APP_ID = "50f5192da9ea4f8fa089db17bf6c7a59"
 
 let token = null;
@@ -9,8 +8,11 @@ let channel;
 
 let queryString = window.location.search
 let urlParams = new URLSearchParams(queryString)
-let roomId = 'meeting'
+let roomId = urlParams.get('room')
 
+if(!roomId){
+    window.location = 'lobby.html'
+}
 
 let localStream;
 let remoteStream;

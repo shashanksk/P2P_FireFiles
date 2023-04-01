@@ -9,7 +9,7 @@ body{
     border-radius: 10px;
     background-color: #262625;
     position: fixed;
-    top: 55%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -43,18 +43,6 @@ input {
     margin-top: 32px;
   }
  
-button{
-  box-sizing: border-box;
-  color: #fff;
-  width: 100%;
-  margin: 0;
-  border: none;
-  border-radius: 5px;
-  padding: 16px 20px;
-  font-size: 15px;
-  background-color: #3f434a;
-  margin-top: 32px;
-}
  
   input[type='submit'] {
     background-color: #845695;
